@@ -1,0 +1,18 @@
+---
+- hosts: localhost
+  become: yes
+
+  tasks:
+    - name: Include Apache role
+      include_role:
+        name: ../roles/apache
+      vars:
+        apache_port: 8080
+        apache_server_name: example.com
+
+  handlers:
+    - name: restart apache2
+      service:
+        name: apache2
+        state: restarted
+

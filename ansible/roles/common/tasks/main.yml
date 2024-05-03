@@ -1,0 +1,14 @@
+---
+- name: Update system packages
+  apt:
+    update_cache: yes
+    upgrade: yes
+
+- name: Install common packages
+  package:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - vim
+    - curl
+    - wget

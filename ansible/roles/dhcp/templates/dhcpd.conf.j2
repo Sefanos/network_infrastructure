@@ -1,0 +1,5 @@
+subnet {{ dhcp_subnet }} netmask {{ dhcp_netmask }} {
+    range {{ dhcp_range_start }} {{ dhcp_range_end }};
+    option domain-name-servers {{ dns_servers }};
+    option routers {{ router_ip }};
+}

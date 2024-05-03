@@ -1,0 +1,12 @@
+galaxy_info:
+  author: AmineZeta
+  description: Role for installing and configuring Apache web server.
+  company: Emsi
+  license: MIT
+  min_ansible_version: 2.10
+  platforms:
+    - name: Ubuntu
+      versions:
+        - bionic
+  galaxy_tags:
+    - apache

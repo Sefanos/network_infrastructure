@@ -1,0 +1,19 @@
+---
+- name: Install CoreDNS
+  package:
+    name: coredns
+    state: present
+
+- name: Copy CoreDNS configuration file
+  template:
+    src: Corefile.j2
+    dest: /etc/coredns/Corefile
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Start CoreDNS service
+  service:
+    name: coredns
+    state: started
+    enabled: yes

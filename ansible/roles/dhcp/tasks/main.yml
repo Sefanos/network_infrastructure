@@ -1,0 +1,20 @@
+---
+- name: Install DHCP server
+  package:
+    name: isc-dhcp-server
+    state: present
+
+- name: Copy DHCP configuration file
+  template:
+    src: dhcpd.conf.j2
+    dest: /etc/dhcp/dhcpd.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Start DHCP server
+  service:
+    name: isc-dhcp-server
+    state: started
+    enabled: yes
+

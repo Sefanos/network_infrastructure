@@ -1,0 +1,50 @@
+---
+- name: Install Apache packages
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: latest
+  loop:
+    - apache2
+    - git
+
+- name: Enable mod_rewrite
+  apache2_module:
+    name: rewrite
+    state: present
+
+- name: Configure Apache ports
+  lineinfile:
+    dest: /etc/apache2/ports.conf
+    regexp: "^Listen "
+    line: "Listen 80"
+    state: present
+
+- name: Configure Apache virtual host
+  lineinfile:
+    dest: /etc/apache2/sites-available/000-default.conf
+    regexp: "^<VirtualHost \\*:{{ apache_port }}> *$"
+    line: "<VirtualHost *:{{ apache_port }}>"
+    state: present
+
+- name: Create virtual host configuration file
+  template:
+    src: virtualhost.conf.j2
+    dest: "/etc/apache2/sites-available/{{ apache_server_name }}.conf"
+
+- name: Enable the virtual host
+  command: a2ensite "{{ apache_server_name }}"
+  args:
+    creates: "/etc/apache2/sites-enabled/{{ apache_server_name }}.conf"
+
+- name: Clone basic HTML template
+  git:
+    repo: https://github.com/do-community/ansible-apache-tutorial.git
+    dest: /var/www/{{ apache_server_name }}
+    update: no
+
+- name: Restart Apache service
+  service:
+    name: apache2
+    state: restarted
+
