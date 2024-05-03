@@ -1,0 +1,6 @@
+---
+- name: Deploy DHCP Server
+  hosts: localhost
+  become: yes
+  roles:
+    - ../roles/dhcp

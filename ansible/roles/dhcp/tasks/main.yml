@@ -1,8 +1,13 @@
----
-- name: Install DHCP server
-  package:
+- name: Check if DHCP server is installed
+  command: dpkg -l | grep isc-dhcp-server
+  register: dhcp_installed
+  ignore_errors: yes
+
+- name: Install DHCP server if not installed
+  apt:
     name: isc-dhcp-server
     state: present
+  when: dhcp_installed.rc != 0
 
 - name: Copy DHCP configuration file
   template:
